@@ -1,0 +1,41 @@
+/* Estilos Globales - Requerimiento Lección 3 */
+body { 
+    background-color: #f4f7f6; 
+    padding: 20px; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+}
+
+.wallet-container { 
+    max-width: 450px; 
+    margin: 20px auto; 
+    background: white; 
+    padding: 25px; 
+    border-radius: 20px; 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.balance-card { 
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); 
+    color: white; 
+    padding: 30px; 
+    border-radius: 15px; 
+    margin-bottom: 25px; 
+    text-align: center;
+}
+
+.btn-wallet {
+    padding: 12px;
+    font-weight: 600;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    transition: all 0.2s;
+}
+
+.income { border-left: 5px solid #28a745; color: #28a745; font-weight: bold; }
+.expense { border-left: 5px solid #dc3545; color: #dc3545; font-weight: bold; }
+
+.selected-contact {
+    background-color: #e7f1ff !important;
+    border: 1px solid #007bff !important;
+}
