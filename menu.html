@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alke Wallet - Menú</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <div class="wallet-container">
+    <h2 class="mb-4">Hola, Usuario</h2>
+    <div class="balance-card shadow">
+      <p class="mb-0">Saldo Disponible:</p>
+      <h1 class="display-4 fw-bold" id="balanceText">$0</h1>
+    </div>
+
+    <div class="d-grid gap-2">
+      <button onclick="navegar('deposit.html', 'depósito')" class="btn btn-outline-primary btn-wallet text-start">📥 Depositar Fondos</button>
+      <button onclick="navegar('sendmoney.html', 'transferencia')" class="btn btn-outline-primary btn-wallet text-start">💸 Enviar Dinero</button>
+      <button onclick="navegar('transactions.html', 'historial')" class="btn btn-outline-secondary btn-wallet text-start">📋 Ver Movimientos</button>
+    </div>
+    <hr>
+    <a href="login.html" class="btn btn-light w-100 btn-sm">Cerrar Sesión</a>
+  </div>
+
+  <script>
+    function navegar(url, msg) {
+      window.location.href = url;
+    }
+
+    $(document).ready(function() {
+      // Inicialización de saldo ficticio (Requerimiento 5.2)
+      if (!localStorage.getItem('wallet_balance')) {
+        localStorage.setItem('wallet_balance', '60000');
+      }
+      const balance = localStorage.getItem('wallet_balance');
+      $('#balanceText').text('$' + parseFloat(balance).toLocaleString());
+    });
+  </script>
+</body>
+</html>

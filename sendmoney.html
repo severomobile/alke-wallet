@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alke Wallet - Enviar</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <div class="wallet-container">
+    <h2 class="mb-3">💸 Enviar Dinero</h2>
+    
+    <div class="mb-3">
+      <input type="text" id="searchContact" class="form-control" placeholder="🔍 Buscar contacto...">
+    </div>
+
+    <h6>Mis Contactos</h6>
+    <ul id="contactList" class="list-group mb-3">
+      <li class="list-group-item contact-item" style="cursor:pointer">Juan Pérez (CBU: 9876543210)</li>
+    </ul>
+
+    <button id="btnShowAdd" class="btn btn-outline-success btn-sm w-100 mb-3">+ Nuevo contacto</button>
+
+    <div id="newContactForm" class="card card-body mb-3" style="display:none;">
+      <input type="text" id="newName" class="form-control mb-2" placeholder="Nombre">
+      <input type="text" id="newCBU" class="form-control mb-2" placeholder="CBU (10 dígitos)">
+      <div class="d-flex gap-2">
+        <button id="btnSaveContact" class="btn btn-primary btn-sm flex-fill">Guardar</button>
+        <button id="btnCancelAdd" class="btn btn-secondary btn-sm flex-fill">Cancelar</button>
+      </div>
+    </div>
+
+    <div class="form-group border-top pt-3">
+      <label class="fw-bold">Monto:</label>
+      <input type="number" id="sendAmount" class="form-control mb-2" placeholder="0.00">
+      <button id="btnProcessSend" class="btn btn-primary w-100 btn-wallet">Confirmar Envío</button>
+    </div>
+    <div id="statusMessage" class="mt-2"></div>
+    <a href="menu.html" class="btn btn-link w-100 text-muted">Volver</a>
+  </div>
+
+  <script>
+    $(document).ready(function() {
+      let selectedContact = "";
+
+      // Efectos jQuery (Requerimiento 6.1)
+      $('#btnShowAdd').click(function() { $('#newContactForm').slideDown(); });
+      $('#btnCancelAdd').click(function() { $('#newContactForm').slideUp(); });
+
+      $('#btnSaveContact').click(function() {
+        const name = $('#newName').val();
+        if (name) {
+          $('#contactList').append(`<li class="list-group-item contact-item" style="cursor:pointer">${name}</li>`);
+          $('#newContactForm').slideUp();
+        }
+      });
+
+      $(document).on('click', '.contact-item', function() {
+        $('.contact-item').removeClass('selected-contact');
+        $(this).addClass('selected-contact');
+        selectedContact = $(this).text();
+      });
+
+      $('#btnProcessSend').click(function() {
+        const amount = parseFloat($('#sendAmount').val());
+        let balance = parseFloat(localStorage.getItem('wallet_balance'));
+
+        if (amount > 0 && amount <= balance && selectedContact !== "") {
+          localStorage.setItem('wallet_balance', balance - amount);
+          let logs = JSON.parse(localStorage.getItem('wallet_logs') || '[]');
+          logs.unshift({ desc: `Envío a ${selectedContact}`, amount: amount, type: 'minus', date: new Date().toLocaleString() });
+          localStorage.setItem('wallet_logs', JSON.stringify(logs));
+
+          $('#statusMessage').html('<div class="alert alert-success">¡Enviado!</div>');
+          setTimeout(() => { window.location.href = 'menu.html'; }, 1500);
+        } else {
+          $('#statusMessage').html('<div class="alert alert-danger">Error: Datos o saldo insuficiente</div>');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
